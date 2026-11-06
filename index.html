@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TaskFlow Pro - Workspace & Productivity Suite</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="background-decor"></div>
+
+    <div class="container">
+        <!-- Top App Navigation -->
+        <nav class="app-nav">
+            <div class="brand">
+                <div class="logo-box">
+                    <i class="fa-solid fa-bolt logo-icon"></i>
+                </div>
+                <div>
+                    <h1>TaskFlow <span>PRO</span></h1>
+                    <p class="subtitle">Smart Executive Workspace</p>
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <button id="themeToggleBtn" class="nav-btn" title="Toggle Theme">
+                    <i class="fa-solid fa-moon"></i>
+                </button>
+                <button id="exportCsvBtn" class="nav-btn secondary" title="Export Tasks to CSV">
+                    <i class="fa-solid fa-file-export"></i> Export
+                </button>
+            </div>
+        </nav>
+
+        <!-- Dynamic Dashboard Overview -->
+        <section class="stats-overview">
+            <div class="stat-card">
+                <div class="stat-icon-wrapper total"><i class="fa-solid fa-list-check"></i></div>
+                <div class="stat-info">
+                    <h3 id="statTotal">0</h3>
+                    <p>Total Tasks</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper pending"><i class="fa-regular fa-clock"></i></div>
+                <div class="stat-info">
+                    <h3 id="statPending">0</h3>
+                    <p>Pending</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper completed"><i class="fa-regular fa-circle-check"></i></div>
+                <div class="stat-info">
+                    <h3 id="statCompleted">0</h3>
+                    <p>Completed</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon-wrapper urgent"><i class="fa-solid fa-fire"></i></div>
+                <div class="stat-info">
+                    <h3 id="statUrgent">0</h3>
+                    <p>High Priority</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Productivity Progress Bar -->
+        <div class="progress-container">
+            <div class="progress-header">
+                <span><i class="fa-solid fa-chart-line"></i> Completion Rate</span>
+                <strong id="progressPercent">0%</strong>
+            </div>
+            <div class="progress-track">
+                <div id="progressBar" class="progress-fill" style="width: 0%;"></div>
+            </div>
+        </div>
+
+        <!-- Main Workspace Box -->
+        <main class="task-box">
+            <!-- Add Task Form Inputs -->
+            <div class="input-panel">
+                <div class="input-row main-row">
+                    <div class="input-wrapper text-wrapper">
+                        <i class="fa-solid fa-pen input-icon"></i>
+                        <input type="text" id="taskInput" placeholder="What needs to be accomplished?">
+                    </div>
+                    
+                    <div class="select-wrapper priority-wrapper">
+                        <select id="prioritySelect">
+                            <option value="low">Low Priority</option>
+                            <option value="medium" selected>Medium Priority</option>
+                            <option value="high">High Priority</option>
+                        </select>
+                    </div>
+
+                    <div class="input-wrapper date-wrapper">
+                        <input type="date" id="dateInput">
+                    </div>
+
+                    <button id="addBtn" class="primary-btn">
+                        <i class="fa-solid fa-plus"></i> <span>Add Task</span>
+                    </button>
+                </div>
+
+                <!-- Secondary Attributes Row -->
+                <div class="input-row sub-row">
+                    <div class="select-wrapper category-wrapper">
+                        <select id="categorySelect">
+                            <option value="Work">💼 Work</option>
+                            <option value="Personal" selected>👤 Personal</option>
+                            <option value="Study">📚 Study</option>
+                            <option value="Health">❤️ Health</option>
+                        </select>
+                    </div>
+                    <span class="tip-text"><i class="fa-regular fa-lightbulb"></i> Press <strong>Enter</strong> to create task instantly</span>
+                </div>
+            </div>
+
+            <!-- Toolbar (Search, Filters & Actions) -->
+            <div class="controls-toolbar">
+                <div class="search-wrapper">
+                    <i class="fa-solid fa-magnifying-glass search-icon"></i>
+                    <input type="text" id="searchInput" placeholder="Search tasks by title or tag...">
+                </div>
+
+                <div class="controls-right">
+                    <div class="filters">
+                        <button class="filter-btn active" data-filter="All">All</button>
+                        <button class="filter-btn" data-filter="Active">Active</button>
+                        <button class="filter-btn" data-filter="Completed">Completed</button>
+                    </div>
+
+                    <div class="select-wrapper sort-wrapper">
+                        <select id="sortSelect">
+                            <option value="newest">Newest First</option>
+                            <option value="priority">Sort by Priority</option>
+                            <option value="dueDate">Sort by Due Date</option>
+                        </select>
+                    </div>
+
+                    <button id="clearCompletedBtn" class="danger-link-btn" title="Clear completed tasks">
+                        <i class="fa-regular fa-trash-can"></i>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Task Items List -->
+            <ul id="taskList" class="task-list">
+                <!-- Dynamic tasks render here -->
+            </ul>
+        </main>
+
+        <footer>
+            <p>TaskFlow Pro Architecture • Designed for High Performers by <span>Mayank Pal</span></p>
+        </footer>
+    </div>
+
+    <!-- Edit Task Modal -->
+    <div id="editModal" class="modal-overlay hidden">
+        <div class="modal-card">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square"></i> Edit Task</h3>
+                <button id="closeModalBtn" class="close-btn">&times;</button>
+            </div>
+            <div class="modal-body">
+                <label>Task Title</label>
+                <input type="text" id="editTaskText" class="modal-input">
+
+                <div class="modal-row">
+                    <div>
+                        <label>Priority</label>
+                        <select id="editTaskPriority" class="modal-input">
+                            <option value="low">Low</option>
+                            <option value="medium">Medium</option>
+                            <option value="high">High</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label>Category</label>
+                        <select id="editTaskCategory" class="modal-input">
+                            <option value="Work">💼 Work</option>
+                            <option value="Personal">👤 Personal</option>
+                            <option value="Study">📚 Study</option>
+                            <option value="Health">❤️ Health</option>
+                        </select>
+                    </div>
+                </div>
+
+                <label>Due Date</label>
+                <input type="date" id="editTaskDate" class="modal-input">
+            </div>
+            <div class="modal-footer">
+                <button id="cancelEditBtn" class="nav-btn">Cancel</button>
+                <button id="saveEditBtn" class="primary-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
